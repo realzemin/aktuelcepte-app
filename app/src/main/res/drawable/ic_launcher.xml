@@ -1,18 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background>
-        <color android:color="@color/primary" />
-    </background>
-    <foreground>
-        <inset android:inset="25%">
-            <vector android:width="108dp"
-                android:height="108dp"
-                android:viewportWidth="24"
-                android:viewportHeight="24">
-                <path
-                    android:fillColor="#FFFFFF"
-                    android:pathData="M12,2L1,21h22L12,2zm0,3.99L19.53,19H4.47L12,5.99zM11,10h2v4h-2zm0,6h2v2h-2z"/>
-            </vector>
-        </inset>
-    </foreground>
-</adaptive-icon>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,2L1,21h22L12,2zm0,3.99L19.53,19H4.47L12,5.99zM11,10h2v4h-2zm0,6h2v2h-2z"/>
+</vector>
