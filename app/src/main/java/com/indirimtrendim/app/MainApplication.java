@@ -32,10 +32,19 @@ public class MainApplication extends Application {
                 targetUrl = "https://indirimtrendim.com";
             }
             
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.setData(Uri.parse(targetUrl));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+            MainActivity.TARGET_URL = targetUrl;
+
+            if (MainActivity.instance != null) {
+                MainActivity.instance.runOnUiThread(() -> {
+                    MainActivity.instance.loadTargetUrl(MainActivity.TARGET_URL);
+                });
+            } else {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("target_url", targetUrl);
+                intent.setData(Uri.parse(targetUrl));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
         });
     }
 }

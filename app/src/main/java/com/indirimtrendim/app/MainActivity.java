@@ -20,11 +20,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.onesignal.OneSignal;
 import com.onesignal.Continue;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static MainActivity instance;
+    public static String TARGET_URL = null;
+
     private static final String DEFAULT_URL = "https://indirimtrendim.com";
-    private WebView webView;
+    public WebView webView;
     private SwipeRefreshLayout swipeRefresh;
     private ProgressBar progressBar;
 
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupWebView();
 
-        // Geri tuşu yönetimi (Sayfada geri gitme)
+        // Geri tuşu yönetimi
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -69,12 +74,46 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // Açılış URL'i
-        String openUrl = DEFAULT_URL;
-        if (getIntent() != null && getIntent().getData() != null) {
-            openUrl = getIntent().getData().toString();
-        }
+        // Açılış URL'i çözümleme (Bildirim tıklaması, deep link veya ana sayfa)
+        String openUrl = resolveTargetUrl(getIntent());
         webView.loadUrl(openUrl);
+    }
+
+    public void loadTargetUrl(String url) {
+        if (url != null && !url.trim().isEmpty() && webView != null) {
+            webView.loadUrl(url);
+        }
+    }
+
+    private String resolveTargetUrl(Intent intent) {
+        if (TARGET_URL != null && !TARGET_URL.trim().isEmpty()) {
+            String url = TARGET_URL;
+            TARGET_URL = null;
+            return url;
+        }
+        if (intent != null) {
+            if (intent.getData() != null) {
+                return intent.getData().toString();
+            }
+            if (intent.hasExtra("target_url")) {
+                String u = intent.getStringExtra("target_url");
+                if (u != null && !u.trim().isEmpty()) return u;
+            }
+            if (intent.hasExtra("onesignal_data")) {
+                try {
+                    JSONObject obj = new JSONObject(intent.getStringExtra("onesignal_data"));
+                    if (obj.has("custom")) {
+                        JSONObject custom = new JSONObject(obj.getString("custom"));
+                        if (custom.has("a")) {
+                            JSONObject a = custom.getJSONObject("a");
+                            if (a.has("url")) return a.getString("url");
+                        }
+                        if (custom.has("u")) return custom.getString("u");
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+        return DEFAULT_URL;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -138,9 +177,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if (intent != null && intent.getData() != null && webView != null) {
-            String targetUrl = intent.getData().toString();
-            webView.loadUrl(targetUrl);
+        String target = resolveTargetUrl(intent);
+        loadTargetUrl(target);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (instance == this) {
+            instance = null;
         }
+        super.onDestroy();
     }
 }
