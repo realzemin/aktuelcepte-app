@@ -13,7 +13,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,23 +39,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         // Bildirim İzni İsteme (Android 13+)
-        OneSignal.getNotifications().requestPermission(true, Continue.with(r -> {
-            if (r.isSuccess()) {
-                // İzin verildi
-            }
-        }));
-
-        // Bildirime Tıklanınca Açılan Linki Dinleme
-        OneSignal.getNotifications().addClickListener(event -> {
-            String launchUrl = event.getNotification().getLaunchURL();
-            if (launchUrl != null && !launchUrl.isEmpty()) {
-                runOnUiThread(() -> {
-                    if (webView != null) {
-                        webView.loadUrl(launchUrl);
-                    }
-                });
-            }
-        });
+        OneSignal.getNotifications().requestPermission(true, Continue.with(r -> {}));
 
         setupWebView();
 
@@ -64,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (webView.canGoBack()) {
+                if (webView != null && webView.canGoBack()) {
                     webView.goBack();
                 } else {
                     setEnabled(false);
@@ -73,10 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Swipe-to-refresh (Sadece sayfa en tepedeyken bilinçli çekildiğinde yeniler, kaydırma sırasında asla tetiklenmez)
-        swipeRefresh.setOnRefreshListener(() -> webView.reload());
+        // Swipe-to-refresh
+        swipeRefresh.setOnRefreshListener(() -> {
+            if (webView != null) webView.reload();
+        });
         swipeRefresh.setColorSchemeColors(0xFFEE4D2D, 0xFF232F3E);
-        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView.canScrollVertically(-1));
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView != null && webView.canScrollVertically(-1));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -84,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // Intent ile URL geldiyse onu aç, yoksa ana sayfayı aç
+        // Açılış URL'i
         String openUrl = DEFAULT_URL;
         if (getIntent() != null && getIntent().getData() != null) {
             openUrl = getIntent().getData().toString();
@@ -110,10 +95,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                // Harici linkler (WhatsApp, Telegram, Mağaza linkleri) dış uygulamada açılsın
+                // Sitenin kendi linkleri uygulama içinde kalsın
                 if (url.startsWith("https://indirimtrendim.com") || url.startsWith("http://indirimtrendim.com")) {
                     return false;
                 }
+                // Harici linkler (WhatsApp, Telegram, Mağaza linkleri) dış uygulamada açılsın
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);
@@ -152,8 +138,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if (intent != null && intent.getData() != null) {
-            webView.loadUrl(intent.getData().toString());
+        if (intent != null && intent.getData() != null && webView != null) {
+            String targetUrl = intent.getData().toString();
+            webView.loadUrl(targetUrl);
         }
     }
 }
