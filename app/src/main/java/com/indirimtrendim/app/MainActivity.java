@@ -73,9 +73,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Swipe-to-refresh
+        // Swipe-to-refresh (Sadece sayfa en tepedeyken bilinçli çekildiğinde yeniler, kaydırma sırasında asla tetiklenmez)
         swipeRefresh.setOnRefreshListener(() -> webView.reload());
         swipeRefresh.setColorSchemeColors(0xFFEE4D2D, 0xFF232F3E);
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView.canScrollVertically(-1));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                swipeRefresh.setEnabled(!webView.canScrollVertically(-1));
+            });
+        }
 
         // Intent ile URL geldiyse onu aç, yoksa ana sayfayı aç
         String openUrl = DEFAULT_URL;
