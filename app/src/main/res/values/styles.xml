@@ -8,6 +8,6 @@
     <style name="Theme.IndirimTrendim.NoActionBar" parent="Theme.IndirimTrendim">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:windowBackground">#FFFDF8</item>
     </style>
 </resources>

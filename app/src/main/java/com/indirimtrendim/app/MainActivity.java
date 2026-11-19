@@ -43,15 +43,21 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh = findViewById(R.id.swipeRefresh);
         progressBar = findViewById(R.id.progressBar);
 
-        // Android 15/16 Edge-to-Edge Güvenli Alanı (Çentik, Durum Çubuğu ve Gezinme Çubuğu Payı)
+        // Android 15/16 Edge-to-Edge Güvenli Alanı:
+        // Üst = 0: Web sitesinin kendi krem/amber rengi saatin arkasına kadar pürüzsüz uzanır (Full Bleed)
+        // Alt = insets.bottom: Alt menü butonları telefonun Home/Back tuşlarının üstünde tertemiz durur
         androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.swipeRefresh), (v, windowInsets) -> {
             androidx.core.graphics.Insets insets = windowInsets.getInsets(
                 androidx.core.view.WindowInsetsCompat.Type.systemBars() |
                 androidx.core.view.WindowInsetsCompat.Type.displayCutout()
             );
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            v.setPadding(insets.left, 0, insets.right, insets.bottom);
             return windowInsets;
         });
+
+        // Durum çubuğu ikonlarını koyu (siyah) yapıyoruz (açık zemin üzerinde net okunsun)
+        androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
+            .setAppearanceLightStatusBars(true);
 
         // Bildirim İzni İsteme (Android 13+)
         OneSignal.getNotifications().requestPermission(true, Continue.with(r -> {}));
@@ -71,9 +77,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Swipe-to-refresh
+        // Swipe-to-refresh: Çekip bırakıldığında önbelleği de temizleyip en güncel web içeriğini çeker
         swipeRefresh.setOnRefreshListener(() -> {
-            if (webView != null) webView.reload();
+            if (webView != null) {
+                webView.clearCache(true);
+                webView.reload();
+            }
         });
         swipeRefresh.setColorSchemeColors(0xFFEE4D2D, 0xFF232F3E);
         swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView != null && webView.canScrollVertically(-1));
