@@ -3,6 +3,7 @@ package com.indirimtrendim.app;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.onesignal.OneSignal;
 import com.onesignal.Continue;
@@ -29,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String DEFAULT_URL = "https://indirimtrendim.com";
     public WebView webView;
-    private SwipeRefreshLayout swipeRefresh;
     private ProgressBar progressBar;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -38,30 +41,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        // Uçtan uca (Full Bleed) tam şeffaf durum çubuğu
-        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        // Uçtan uca (Full Bleed) tam şeffaf durum çubuğu: Web sitesi krem arka planı saatin arkasına kadar pürüzsüz uzanır
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
-        swipeRefresh = findViewById(R.id.swipeRefresh);
         progressBar = findViewById(R.id.progressBar);
 
         // Android 15/16 Edge-to-Edge Güvenli Alanı:
-        // Üst = 0: Web sitesinin kendi krem/amber rengi saatin arkasına kadar pürüzsüz uzanır (Full Bleed)
+        // Üst = 0: Web sitesinin rengi saatin arkasına kadar kesintisiz uzanır (Full Bleed)
         // Alt = insets.bottom: Alt menü butonları telefonun Home/Back tuşlarının üstünde tertemiz durur
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.swipeRefresh), (v, windowInsets) -> {
-            androidx.core.graphics.Insets insets = windowInsets.getInsets(
-                androidx.core.view.WindowInsetsCompat.Type.systemBars() |
-                androidx.core.view.WindowInsetsCompat.Type.displayCutout()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainRoot), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.systemBars() |
+                WindowInsetsCompat.Type.displayCutout()
             );
             v.setPadding(insets.left, 0, insets.right, insets.bottom);
             return windowInsets;
         });
 
         // Durum çubuğu ikonlarını koyu (siyah) yapıyoruz (açık zemin üzerinde net okunsun)
-        androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
+        WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
             .setAppearanceLightStatusBars(true);
 
         // Bildirim İzni İsteme (Android 13+)
@@ -81,22 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // Swipe-to-refresh: Çekip bırakıldığında önbelleği de temizleyip en güncel web içeriğini çeker
-        swipeRefresh.setOnRefreshListener(() -> {
-            if (webView != null) {
-                webView.clearCache(true);
-                webView.reload();
-            }
-        });
-        swipeRefresh.setColorSchemeColors(0xFFEE4D2D, 0xFF232F3E);
-        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView != null && webView.canScrollVertically(-1));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                swipeRefresh.setEnabled(!webView.canScrollVertically(-1));
-            });
-        }
 
         // Açılış URL'i çözümleme (Bildirim tıklaması, deep link veya ana sayfa)
         String openUrl = resolveTargetUrl(getIntent());
@@ -142,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
-        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -154,17 +139,11 @@ public class MainActivity extends AppCompatActivity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setUserAgentString(settings.getUserAgentString() + " IndirimTrendimApp/1.0");
 
-        // Dokunma ve Tıklama Hızı Optimizasyonu (300ms gecikmeyi sıfırlar, anında tepki verir)
+        // Dokunma ve Tıklama Hızı Optimizasyonu (300ms gecikmeyi sıfırlar, Chrome gibi doğrudan tepki verir):
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
         settings.setNeedInitialFocus(false);
-
-        // Tıklamaların ve dokunmaların SwipeRefresh tarafından yutulmasını önler:
-        // Sadece sayfa en tepedeyken aşağı çekme yenilemesi çalışır, sayfa içindeyken tıklamalar anında tepki verir.
-        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            swipeRefresh.setEnabled(scrollY == 0);
-        });
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -194,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 progressBar.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
             }
         });
 
