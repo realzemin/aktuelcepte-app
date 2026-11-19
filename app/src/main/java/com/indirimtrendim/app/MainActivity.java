@@ -43,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh = findViewById(R.id.swipeRefresh);
         progressBar = findViewById(R.id.progressBar);
 
+        // Android 15/16 Edge-to-Edge Güvenli Alanı (Çentik, Durum Çubuğu ve Gezinme Çubuğu Payı)
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.swipeRefresh), (v, windowInsets) -> {
+            androidx.core.graphics.Insets insets = windowInsets.getInsets(
+                androidx.core.view.WindowInsetsCompat.Type.systemBars() |
+                androidx.core.view.WindowInsetsCompat.Type.displayCutout()
+            );
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            return windowInsets;
+        });
+
         // Bildirim İzni İsteme (Android 13+)
         OneSignal.getNotifications().requestPermission(true, Continue.with(r -> {}));
 
