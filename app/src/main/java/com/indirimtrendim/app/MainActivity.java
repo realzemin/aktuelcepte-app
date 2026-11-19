@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
+
+        // Uçtan uca (Full Bleed) tam şeffaf durum çubuğu
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
@@ -148,6 +153,18 @@ public class MainActivity extends AppCompatActivity {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setUserAgentString(settings.getUserAgentString() + " IndirimTrendimApp/1.0");
+
+        // Dokunma ve Tıklama Hızı Optimizasyonu (300ms gecikmeyi sıfırlar, anında tepki verir)
+        settings.setSupportZoom(false);
+        settings.setBuiltInZoomControls(false);
+        settings.setDisplayZoomControls(false);
+        settings.setNeedInitialFocus(false);
+
+        // Tıklamaların ve dokunmaların SwipeRefresh tarafından yutulmasını önler:
+        // Sadece sayfa en tepedeyken aşağı çekme yenilemesi çalışır, sayfa içindeyken tıklamalar anında tepki verir.
+        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            swipeRefresh.setEnabled(scrollY == 0);
+        });
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
