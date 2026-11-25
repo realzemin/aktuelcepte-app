@@ -1,76 +1,82 @@
 [
   {
-    "id": "bim-cuma-firsat",
+    "id": "bim_cuma",
     "market": "bim",
     "market_title": "BİM",
     "market_color": "#d9232a",
-    "title": "BİM Cuma Aktüel Ürünler Kataloğu",
-    "badge": "RESMİ AFİŞ",
-    "date_range": "28 Kasım - 05 Aralık 2026",
-    "cover_image": "/static/uploads/real_bim_flyer_1.jpg",
+    "title": "BİM 28 Kasım Cuma Aktüel Ürünler",
+    "badge": "BU CUMA",
+    "date_range": "28 Kasım – 05 Aralık 2026",
+    "category": "Elektronik, Züccaciye & Ev Tekstili",
+    "cover_image": "/static/uploads/bim_cuma_sayfa_1.jpg",
     "pages": [
-      "/static/uploads/real_bim_flyer_1.jpg",
-      "/static/uploads/real_bim_flyer_2.jpg",
-      "/static/uploads/real_bim_flyer_3.jpg"
-    ],
-    "category": "Elektronik & Züccaciye"
+      "/static/uploads/bim_cuma_sayfa_1.jpg",
+      "/static/uploads/bim_cuma_sayfa_2.jpg",
+      "/static/uploads/bim_cuma_sayfa_3.jpg",
+      "/static/uploads/bim_cuma_sayfa_4.jpg"
+    ]
   },
   {
-    "id": "bim-sali-haftanin-onerileri",
-    "market": "bim",
-    "market_title": "BİM",
-    "market_color": "#d9232a",
-    "title": "BİM Salı Haftanın Önerileri",
-    "badge": "BU HAFTA",
-    "date_range": "25 Kasım - 02 Aralık 2026",
-    "cover_image": "/static/uploads/real_bim_flyer_4.jpg",
-    "pages": [
-      "/static/uploads/real_bim_flyer_4.jpg",
-      "/static/uploads/real_bim_flyer_5.jpg",
-      "/static/uploads/real_bim_flyer_6.jpg"
-    ],
-    "category": "Temel Gıda & Temizlik"
-  },
-  {
-    "id": "a101-aldin-aldin",
+    "id": "a101_aldin",
     "market": "a101",
     "market_title": "A101",
     "market_color": "#0099cc",
-    "title": "A101 27 Kasım Perşembe Aldın Aldın!",
-    "badge": "ALDIN ALDIN",
-    "date_range": "27 Kasım - 04 Aralık 2026",
-    "cover_image": "/static/uploads/a101_aldin_p1.jpg",
+    "title": "A101 27 Kasım Aldın Aldın! Fırsat Kataloğu",
+    "badge": "BU PERŞEMBE",
+    "date_range": "27 Kasım – 04 Aralık 2026",
+    "category": "Televizyon, Beyaz Eşya & Mutfak",
+    "cover_image": "/static/uploads/a101_aldin_sayfa_1.jpg",
     "pages": [
-      "/static/uploads/a101_aldin_p1.jpg"
-    ],
-    "category": "Televizyon & Beyaz Eşya"
+      "/static/uploads/a101_aldin_sayfa_1.jpg",
+      "/static/uploads/a101_aldin_sayfa_2.jpg",
+      "/static/uploads/a101_aldin_sayfa_3.jpg",
+      "/static/uploads/a101_aldin_sayfa_4.jpg"
+    ]
   },
   {
-    "id": "sok-carsamba",
+    "id": "sok_carsamba",
     "market": "sok",
     "market_title": "ŞOK",
     "market_color": "#eab308",
     "title": "ŞOK 26 Kasım Çarşamba Fırsatları",
-    "badge": "ŞOK SEVİYORUZ",
-    "date_range": "26 Kasım - 03 Aralık 2026",
-    "cover_image": "/static/uploads/sok_firsat_p1.jpg",
+    "badge": "BU ÇARŞAMBA",
+    "date_range": "26 Kasım – 03 Aralık 2026",
+    "category": "Temizlik, Kişisel Bakım & Gıda",
+    "cover_image": "/static/uploads/sok_carsamba_sayfa_1.jpg",
     "pages": [
-      "/static/uploads/sok_firsat_p1.jpg"
-    ],
-    "category": "Temel Gıda & Yağ"
+      "/static/uploads/sok_carsamba_sayfa_1.jpg",
+      "/static/uploads/sok_carsamba_sayfa_2.jpg",
+      "/static/uploads/sok_carsamba_sayfa_3.jpg",
+      "/static/uploads/sok_carsamba_sayfa_4.jpg"
+    ]
   },
   {
-    "id": "tarim-kredi-indirim",
+    "id": "sok_haftasonu",
+    "market": "sok",
+    "market_title": "ŞOK",
+    "market_color": "#eab308",
+    "title": "ŞOK 29 Kasım Hafta Sonu Fırsatları",
+    "badge": "HAFTA SONU",
+    "date_range": "29 – 30 Kasım 2026",
+    "category": "Oyuncak, Giyim & Ev Gereçleri",
+    "cover_image": "/static/uploads/sok_haftasonu_sayfa_1.jpg",
+    "pages": [
+      "/static/uploads/sok_haftasonu_sayfa_1.jpg",
+      "/static/uploads/sok_haftasonu_sayfa_2.jpg"
+    ]
+  },
+  {
+    "id": "tarimkredi",
     "market": "tarimkredi",
     "market_title": "Tarım Kredi",
     "market_color": "#15803d",
-    "title": "Tarım Kredi Kooperatifi İndirim Günleri",
-    "badge": "UYGUN FİYAT",
-    "date_range": "20 Kasım - 30 Kasım 2026",
-    "cover_image": "/static/uploads/tarimkredi_p1.jpg",
+    "title": "Tarım Kredi Kooperatif Market İndirimleri",
+    "badge": "BEREKETLİ",
+    "date_range": "25 Kasım – 10 Aralık 2026",
+    "category": "Doğal Bakliyat, Yağ & Süt Ürünleri",
+    "cover_image": "/static/uploads/tarimkredi_sayfa_1.jpg",
     "pages": [
-      "/static/uploads/tarimkredi_p1.jpg"
-    ],
-    "category": "Doğal Bal, Yağ & Bakliyat"
+      "/static/uploads/tarimkredi_sayfa_1.jpg"
+    ]
   }
 ]

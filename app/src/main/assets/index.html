@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>AktüelCepte - BİM, A101, ŞOK İndirim Katalogları</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,7 +100,6 @@
       background: #f8fafc;
       color: #475569;
       transition: all 0.2s;
-      display: flex; align-items: center; gap: 6px;
     }
     .pill-btn.active {
       background: #0f172a;
@@ -109,9 +108,9 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
     }
 
-    /* CONTENT GRID */
+    /* CATALOG CARDS */
     .catalog-list {
-      padding: 14px 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -119,9 +118,9 @@
 
     .catalog-card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 16px;
       overflow: hidden;
+      border: 1px solid var(--border);
       box-shadow: var(--shadow-sm);
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
@@ -131,64 +130,47 @@
     .card-thumb-wrap {
       position: relative;
       width: 100%;
-      height: 220px;
-      background: #f1f5f9;
+      height: 240px;
+      background: #e2e8f0;
       overflow: hidden;
     }
     .card-thumb {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s;
+      object-position: top center;
     }
+
     .card-badge {
       position: absolute;
-      top: 12px; left: 12px;
-      background: rgba(15, 23, 42, 0.85);
-      color: #fff;
-      backdrop-filter: blur(6px);
+      top: 12px;
+      left: 12px;
       padding: 4px 10px;
       border-radius: 8px;
       font-size: 11px;
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     .page-count-badge {
       position: absolute;
-      bottom: 12px; right: 12px;
-      background: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
       font-weight: 700;
+      color: #fff;
     }
 
     .card-body { padding: 14px 16px; }
-    .card-market-tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 800;
-      color: #d9232a;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .card-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #0f172a;
-      line-height: 1.35;
-      margin-bottom: 6px;
-    }
-    .card-date {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      display: flex; align-items: center; gap: 4px;
-    }
+    .card-market-tag { font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+    .card-title { font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.35; margin-bottom: 6px; }
+    .card-date { font-size: 12.5px; font-weight: 600; color: #64748b; display: flex; align-items: center; gap: 4px; }
 
-    /* FULLSCREEN FLYER VIEWER MODAL */
+    /* FULLSCREEN VIEWER MODAL */
     .viewer-modal {
       display: none;
       position: fixed;
@@ -202,82 +184,101 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.8);
       color: #fff;
     }
-    .viewer-title { font-size: 14px; font-weight: 700; max-width: 75%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .viewer-close {
+    .viewer-title { font-size: 14px; font-weight: 700; max-width: 65%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .viewer-tools { display: flex; align-items: center; gap: 8px; }
+    .tool-btn {
       background: rgba(255, 255, 255, 0.2);
       border: none;
       color: #fff;
-      font-size: 18px;
-      width: 34px; height: 34px;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .viewer-close {
+      background: #ef4444;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      width: 32px; height: 32px;
       border-radius: 50%;
       cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
     }
 
     .viewer-content {
       flex: 1;
+      overflow: auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
+      padding: 8px;
+      touch-action: pan-x pan-y pinch-zoom;
     }
     .viewer-img {
       max-width: 100%;
-      max-height: 80vh;
+      max-height: 100%;
       object-fit: contain;
       border-radius: 8px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease;
     }
 
     .viewer-bottom {
-      padding: 14px 16px;
-      background: rgba(0, 0, 0, 0.8);
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.85);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .page-nav-btn {
-      background: #334155;
+      background: rgba(255, 255, 255, 0.15);
       color: #fff;
       border: none;
-      padding: 10px 16px;
+      padding: 10px 18px;
       border-radius: 10px;
-      font-weight: 700;
       font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
     }
+    .page-nav-btn:active { background: rgba(255, 255, 255, 0.3); }
     .viewer-share-btn {
-      flex: 1;
       background: #25d366;
       color: #fff;
       border: none;
-      padding: 10px;
+      padding: 10px 18px;
       border-radius: 10px;
-      font-weight: 800;
       font-size: 13px;
+      font-weight: 800;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
+      display: flex; align-items: center; gap: 6px;
     }
 
     /* ADMOB BANNER */
     .admob-banner {
-      width: 100%;
-      height: 50px;
-      background: #f1f5f9;
-      border-top: 1px solid #e2e8f0;
+      margin-top: auto;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 10px;
+      text-align: center;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      position: sticky;
-      bottom: 0;
-      z-index: 30;
+      justify-content: center;
+      gap: 8px;
     }
-    .admob-tag { font-size: 9px; background: #94a3b8; color: #fff; padding: 2px 5px; border-radius: 3px; font-weight: 800; }
+    .admob-tag {
+      background: #d9232a;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -289,17 +290,17 @@
       <div class="brand-icon">🛒</div>
       <div class="brand-text">Aktüel<span>Cepte</span></div>
     </div>
-    <div class="alarm-btn" onclick="subscribeAlarm()">
+    <button class="alarm-btn" onclick="alert('🔔 İndirim Alarmı Aktif! Yeni katalog yayınlandığında anında bildirim alacaksınız.')">
       🔔 İndirim Alarmı
-    </div>
+    </button>
   </header>
 
   <!-- MARKET FILTER PILLS -->
-  <div class="market-scroll" id="marketFilters">
-    <button class="pill-btn active" onclick="filterMarket('all', this)">🌟 Tümü</button>
-    <button class="pill-btn" onclick="filterMarket('bim', this)">🔴 BİM</button>
-    <button class="pill-btn" onclick="filterMarket('a101', this)">🔵 A101</button>
-    <button class="pill-btn" onclick="filterMarket('sok', this)">🟡 ŞOK</button>
+  <div class="market-scroll">
+    <button class="pill-btn active" onclick="filterMarket('all', this)">⭐ Tümü</button>
+    <button class="pill-btn" onclick="filterMarket('bim', this)">🔴 BİM (4 Sayfa)</button>
+    <button class="pill-btn" onclick="filterMarket('a101', this)">🔵 A101 (4 Sayfa)</button>
+    <button class="pill-btn" onclick="filterMarket('sok', this)">🟡 ŞOK (6 Sayfa)</button>
     <button class="pill-btn" onclick="filterMarket('tarimkredi', this)">🟢 Tarım Kredi</button>
   </div>
 
@@ -316,14 +317,18 @@
   </div>
 </div>
 
-<!-- FULLSCREEN FLYER VIEWER MODAL -->
+<!-- FULLSCREEN FLYER VIEWER MODAL WITH ZOOM -->
 <div id="viewerModal" class="viewer-modal">
   <div class="viewer-top">
     <div class="viewer-title" id="viewerTitle">Katalog Görüntüleyici</div>
-    <button class="viewer-close" onclick="closeViewer()">✕</button>
+    <div class="viewer-tools">
+      <button class="tool-btn" onclick="zoomIn()">🔍+</button>
+      <button class="tool-btn" onclick="zoomOut()">🔍-</button>
+      <button class="viewer-close" onclick="closeViewer()">✕</button>
+    </div>
   </div>
 
-  <div class="viewer-content">
+  <div class="viewer-content" id="viewerContent">
     <img id="viewerImg" class="viewer-img" src="" alt="Afiş">
   </div>
 
@@ -337,13 +342,14 @@
 </div>
 
 <script>
-  let allCatalogs = [];
+  const OFFLINE_CATALOGS = [{"id": "bim_cuma", "market": "bim", "market_title": "BİM", "market_color": "#d9232a", "title": "BİM 28 Kasım Cuma Aktüel Ürünler", "badge": "BU CUMA", "date_range": "28 Kasım – 05 Aralık 2026", "category": "Elektronik, Züccaciye & Ev Tekstili", "cover_image": "/static/uploads/bim_cuma_sayfa_1.jpg", "pages": ["/static/uploads/bim_cuma_sayfa_1.jpg", "/static/uploads/bim_cuma_sayfa_2.jpg", "/static/uploads/bim_cuma_sayfa_3.jpg", "/static/uploads/bim_cuma_sayfa_4.jpg"]}, {"id": "a101_aldin", "market": "a101", "market_title": "A101", "market_color": "#0099cc", "title": "A101 27 Kasım Aldın Aldın! Fırsat Kataloğu", "badge": "BU PERŞEMBE", "date_range": "27 Kasım – 04 Aralık 2026", "category": "Televizyon, Beyaz Eşya & Mutfak", "cover_image": "/static/uploads/a101_aldin_sayfa_1.jpg", "pages": ["/static/uploads/a101_aldin_sayfa_1.jpg", "/static/uploads/a101_aldin_sayfa_2.jpg", "/static/uploads/a101_aldin_sayfa_3.jpg", "/static/uploads/a101_aldin_sayfa_4.jpg"]}, {"id": "sok_carsamba", "market": "sok", "market_title": "ŞOK", "market_color": "#eab308", "title": "ŞOK 26 Kasım Çarşamba Fırsatları", "badge": "BU ÇARŞAMBA", "date_range": "26 Kasım – 03 Aralık 2026", "category": "Temizlik, Kişisel Bakım & Gıda", "cover_image": "/static/uploads/sok_carsamba_sayfa_1.jpg", "pages": ["/static/uploads/sok_carsamba_sayfa_1.jpg", "/static/uploads/sok_carsamba_sayfa_2.jpg", "/static/uploads/sok_carsamba_sayfa_3.jpg", "/static/uploads/sok_carsamba_sayfa_4.jpg"]}, {"id": "sok_haftasonu", "market": "sok", "market_title": "ŞOK", "market_color": "#eab308", "title": "ŞOK 29 Kasım Hafta Sonu Fırsatları", "badge": "HAFTA SONU", "date_range": "29 – 30 Kasım 2026", "category": "Oyuncak, Giyim & Ev Gereçleri", "cover_image": "/static/uploads/sok_haftasonu_sayfa_1.jpg", "pages": ["/static/uploads/sok_haftasonu_sayfa_1.jpg", "/static/uploads/sok_haftasonu_sayfa_2.jpg"]}, {"id": "tarimkredi", "market": "tarimkredi", "market_title": "Tarım Kredi", "market_color": "#15803d", "title": "Tarım Kredi Kooperatif Market İndirimleri", "badge": "BEREKETLİ", "date_range": "25 Kasım – 10 Aralık 2026", "category": "Doğal Bakliyat, Yağ & Süt Ürünleri", "cover_image": "/static/uploads/tarimkredi_sayfa_1.jpg", "pages": ["/static/uploads/tarimkredi_sayfa_1.jpg"]}];
+  let allCatalogs = OFFLINE_CATALOGS;
   let currentCatalog = null;
   let currentPageIndex = 0;
+  let currentZoom = 1.0;
 
-  const OFFLINE_CATALOGS = [{"id": "bim-cuma-firsat", "market": "bim", "market_title": "BİM", "market_color": "#d9232a", "title": "BİM Cuma Aktüel Ürünler Kataloğu", "badge": "RESMİ AFİŞ", "date_range": "28 Kasım - 05 Aralık 2026", "cover_image": "/static/uploads/real_bim_flyer_1.jpg", "pages": ["/static/uploads/real_bim_flyer_1.jpg", "/static/uploads/real_bim_flyer_2.jpg", "/static/uploads/real_bim_flyer_3.jpg"], "category": "Elektronik & Züccaciye"}, {"id": "bim-sali-haftanin-onerileri", "market": "bim", "market_title": "BİM", "market_color": "#d9232a", "title": "BİM Salı Haftanın Önerileri", "badge": "BU HAFTA", "date_range": "25 Kasım - 02 Aralık 2026", "cover_image": "/static/uploads/real_bim_flyer_4.jpg", "pages": ["/static/uploads/real_bim_flyer_4.jpg", "/static/uploads/real_bim_flyer_5.jpg", "/static/uploads/real_bim_flyer_6.jpg"], "category": "Temel Gıda & Temizlik"}, {"id": "a101-aldin-aldin", "market": "a101", "market_title": "A101", "market_color": "#0099cc", "title": "A101 27 Kasım Perşembe Aldın Aldın!", "badge": "ALDIN ALDIN", "date_range": "27 Kasım - 04 Aralık 2026", "cover_image": "/static/uploads/a101_aldin_p1.jpg", "pages": ["/static/uploads/a101_aldin_p1.jpg"], "category": "Televizyon & Beyaz Eşya"}, {"id": "sok-carsamba", "market": "sok", "market_title": "ŞOK", "market_color": "#eab308", "title": "ŞOK 26 Kasım Çarşamba Fırsatları", "badge": "ŞOK SEVİYORUZ", "date_range": "26 Kasım - 03 Aralık 2026", "cover_image": "/static/uploads/sok_firsat_p1.jpg", "pages": ["/static/uploads/sok_firsat_p1.jpg"], "category": "Temel Gıda & Yağ"}, {"id": "tarim-kredi-indirim", "market": "tarimkredi", "market_title": "Tarım Kredi", "market_color": "#15803d", "title": "Tarım Kredi Kooperatifi İndirim Günleri", "badge": "UYGUN FİYAT", "date_range": "20 Kasım - 30 Kasım 2026", "cover_image": "/static/uploads/tarimkredi_p1.jpg", "pages": ["/static/uploads/tarimkredi_p1.jpg"], "category": "Doğal Bal, Yağ & Bakliyat"}];
   function loadCatalogs(market = 'all') {
-    let list = (allCatalogs && allCatalogs.length) ? allCatalogs : OFFLINE_CATALOGS;
+    let list = allCatalogs;
     if (market !== 'all') {
       list = list.filter(item => item.market === market);
     }
@@ -364,9 +370,13 @@
       card.className = 'catalog-card';
       card.onclick = () => openViewer(item);
 
+      // Support relative asset links
+      let cover = item.cover_image;
+      if (cover.startsWith('/static/')) cover = cover.substring(1);
+
       card.innerHTML = `
         <div class="card-thumb-wrap">
-          <img class="card-thumb" src="${item.cover_image}" alt="${item.title}">
+          <img class="card-thumb" src="${cover}" alt="${item.title}">
           <div class="card-badge" style="background:${item.market_color};">${item.badge}</div>
           <div class="page-count-badge">📄 ${item.pages.length} Sayfa</div>
         </div>
@@ -386,50 +396,78 @@
     loadCatalogs(market);
   }
 
-  function openViewer(item) {
-    currentCatalog = item;
+  function openViewer(catalog) {
+    currentCatalog = catalog;
     currentPageIndex = 0;
-    updateViewerImage();
-    document.getElementById('viewerTitle').innerText = item.title;
+    currentZoom = 1.0;
     document.getElementById('viewerModal').style.display = 'flex';
+    updateViewerPage();
   }
 
   function closeViewer() {
     document.getElementById('viewerModal').style.display = 'none';
+    currentCatalog = null;
+    currentZoom = 1.0;
   }
 
-  function updateViewerImage() {
-    if (currentCatalog && currentCatalog.pages.length > 0) {
-      document.getElementById('viewerImg').src = currentCatalog.pages[currentPageIndex];
-      document.getElementById('viewerTitle').innerText = `${currentCatalog.title} (${currentPageIndex + 1}/${currentCatalog.pages.length})`;
-    }
+  function updateViewerPage() {
+    if (!currentCatalog) return;
+    let pageSrc = currentCatalog.pages[currentPageIndex];
+    if (pageSrc.startsWith('/static/')) pageSrc = pageSrc.substring(1);
+
+    const img = document.getElementById('viewerImg');
+    img.src = pageSrc;
+    currentZoom = 1.0;
+    applyZoom();
+
+    document.getElementById('viewerTitle').innerText = 
+      `${currentCatalog.market_title} - Sayfa ${currentPageIndex + 1}/${currentCatalog.pages.length}`;
   }
 
   function prevPage() {
-    if (currentCatalog && currentPageIndex > 0) {
+    if (!currentCatalog) return;
+    if (currentPageIndex > 0) {
       currentPageIndex--;
-      updateViewerImage();
+      updateViewerPage();
     }
   }
 
   function nextPage() {
-    if (currentCatalog && currentPageIndex < currentCatalog.pages.length - 1) {
+    if (!currentCatalog) return;
+    if (currentPageIndex < currentCatalog.pages.length - 1) {
       currentPageIndex++;
-      updateViewerImage();
+      updateViewerPage();
     }
+  }
+
+  function zoomIn() {
+    currentZoom = Math.min(currentZoom + 0.5, 3.0);
+    applyZoom();
+  }
+
+  function zoomOut() {
+    currentZoom = Math.max(currentZoom - 0.5, 1.0);
+    applyZoom();
+  }
+
+  function applyZoom() {
+    const img = document.getElementById('viewerImg');
+    img.style.transform = `scale(${currentZoom})`;
   }
 
   function shareToWhatsApp() {
-    if (currentCatalog) {
-      const text = `🔥 ${currentCatalog.title} fırsat afişini incele!\nGeçerlilik: ${currentCatalog.date_range}`;
-      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+    if (!currentCatalog) return;
+    const text = `📢 ${currentCatalog.title} fırsatlarını AktüelCepte uygulamasında incele!
+Geçerlilik: ${currentCatalog.date_range}`;
+    const url = "https://indirimtrendim.com";
+    if (window.Android && window.Android.shareApp) {
+      window.Android.shareApp(text, url);
+    } else {
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`);
     }
   }
 
-  function subscribeAlarm() {
-    alert('🔔 İndirim Alarmı Aktif!\nBİM, A101 ve ŞOK yeni afiş yayınladığında anında bildirim alacaksınız.');
-  }
-
+  // Initial load
   loadCatalogs('all');
 </script>
 </body>
