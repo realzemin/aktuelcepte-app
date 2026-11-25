@@ -1,4 +1,4 @@
-package com.indirimtrendim.app;
+package com.aktuelcepte.app;
 
 import android.app.Application;
 import android.content.Intent;
@@ -29,7 +29,7 @@ public class MainApplication extends Application {
                 targetUrl = event.getNotification().getLaunchURL();
             }
             if (targetUrl == null || targetUrl.trim().isEmpty()) {
-                targetUrl = "https://indirimtrendim.com";
+                targetUrl = "https://dancing-optical-champagne-knowing.trycloudflare.com";
             }
             
             MainActivity.TARGET_URL = targetUrl;
